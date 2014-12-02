@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ControlTortasModelStoreContainer" CdmEntityContainer="ControlTortasEntities">
+    <EntitySetMapping Name="articulos">
+      <EntityTypeMapping TypeName="ControlTortasModel.articulos">
+        <MappingFragment StoreEntitySet="articulos">
+          <ScalarProperty Name="clave" ColumnName="clave" />
+          <ScalarProperty Name="articulos1" ColumnName="articulos" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ventas">
+      <EntityTypeMapping TypeName="ControlTortasModel.ventas">
+        <MappingFragment StoreEntitySet="ventas">
+          <ScalarProperty Name="folio_ticket" ColumnName="folio_ticket" />
+          <ScalarProperty Name="fecha_ticket" ColumnName="fecha_ticket" />
+          <ScalarProperty Name="hora_ticket" ColumnName="hora_ticket" />
+          <ScalarProperty Name="cantidad_ticket" ColumnName="cantidad_ticket" />
+          <ScalarProperty Name="clave_articulo" ColumnName="clave_articulo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

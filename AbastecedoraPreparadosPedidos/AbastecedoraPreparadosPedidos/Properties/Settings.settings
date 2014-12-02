@@ -1,0 +1,27 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AbastecedoraPreparadosPedidos.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Servidor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">servidor</Value>
+    </Setting>
+    <Setting Name="Path" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Microsip datos\Base de datos.FDB</Value>
+    </Setting>
+    <Setting Name="Usuario" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Usuario</Value>
+    </Setting>
+    <Setting Name="Password" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Contraseña</Value>
+    </Setting>
+    <Setting Name="Puerto" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3050</Value>
+    </Setting>
+    <Setting Name="Impresora" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Impresora</Value>
+    </Setting>
+    <Setting Name="Serie" Type="System.String" Scope="User">
+      <Value Profile="(Default)">A</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

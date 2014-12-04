@@ -53,6 +53,9 @@
   <PropertyGroup>
     <StartupObject>AbastecedoraPreparadosPedidos.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>tortuga.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="FirebirdSql.Data.FirebirdClient">
       <HintPath>..\packages\FirebirdSql.Data.FirebirdClient.4.5.2.0\lib\net40-client\FirebirdSql.Data.FirebirdClient.dll</HintPath>
@@ -148,6 +151,7 @@
     <Content Include="Pedidos\Leeme.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="tortuga.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

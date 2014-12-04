@@ -24,11 +24,9 @@ namespace AbastecedoraPreparadosPedidos.DAL
             return ConfigurationManager.AppSettings["mysql"];
         }
 
-        public List<Venta> ValidarRegistros(List<Venta> lstPedidos)
+        public bool ValidarRegistros(Venta pedido)
         {
-            List<Venta> lstPedidosNuevos = new List<Venta>();
-            lstPedidosNuevos.AddRange(lstPedidos);
-
+            bool exito = false;
             Conexion.ConnectionString = getStringConnection();
 
             Conexion.Open();
@@ -38,44 +36,41 @@ namespace AbastecedoraPreparadosPedidos.DAL
             {
                 Comando.Connection = Conexion;
 
-                foreach(Venta pedido in lstPedidos)
-                {                
-                    Comando.CommandText = 
-                        string.Format(@"INSERT INTO ventas 
+                Comando.CommandText =
+                    string.Format(@"INSERT INTO ventas 
                                              (folio_ticket, fecha_ticket, hora_ticket, 
                                               cantidad_ticket, clave_articulo) 
-                                        VALUES ('{0}', '{1}', '{2}', 
-                                                 {3}, '{4}')",
-                                             pedido.FolioTicket, pedido.Fecha, 
-                                             pedido.Hora, pedido.Cantidad, 
-                                             pedido.Clave);
-                    try
-                    {
-                        Comando.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        if (ex.Message.Contains("Duplicate entry") == false)
-                        {
-                            throw ex;
-                        }
-                        else
-                        {
-                            lstPedidosNuevos.Remove(pedido);
-                        }
-                        
-                    }
+                                         VALUES ('{0}', '{1}', '{2}', 
+                                                  {3}, '{4}')",
+                                         pedido.FolioTicket, pedido.Fecha,
+                                         pedido.Hora, pedido.Cantidad,
+                                         pedido.Clave);
+                try
+                {
+                    Comando.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
                 }
 
                 Transaccion.Commit();
+
+                exito = true;
             }
             catch
             {
                 Transaccion.Rollback();
+                
+                exito = false;
+            }
+            finally
+            {
+                if (Conexion.State != System.Data.ConnectionState.Closed)
+                    Conexion.Close();
             }
 
-
-            return lstPedidosNuevos;
+            return exito;
         }
     }
 }

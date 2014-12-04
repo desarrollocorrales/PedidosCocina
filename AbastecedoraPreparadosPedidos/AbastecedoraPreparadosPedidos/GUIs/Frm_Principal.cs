@@ -14,7 +14,7 @@ namespace AbastecedoraPreparadosPedidos.GUIs
 {
     public partial class Frm_Principal : Form
     {
-        bool exito;
+        string sFullPath;
         System.IO.StreamReader fileToPrint;
         System.Drawing.Font printFont;
 
@@ -25,46 +25,76 @@ namespace AbastecedoraPreparadosPedidos.GUIs
         
         private void btnEnviar_Click(object sender, EventArgs e)
         {
-            string sFullPath = CrearArchivoPedidos();
-            
-            if (exito == true)
-                Imprimir(sFullPath);                            
+            CrearArchivoPedidos();                                      
         }
-        private string CrearArchivoPedidos()
+        private void CrearArchivoPedidos()
         {
-            exito = false;
-            string sFullPath = string.Empty;
-
             try
             {
-                FirebirdDAL DAL = new FirebirdDAL();
-                List<Venta> lstPedidos = DAL.getPedidos();
+                string sFecha = DateTime.Today.ToString("yyyy-MM-dd");
+                //string sFecha = "2014-11-28";
+                FirebirdDAL FirebirdDAL = new FirebirdDAL();
+                MysqlDAL MySqlDAL = new MysqlDAL();
 
-                MysqlDAL myDAL = new MysqlDAL();
-                List<Venta> lstPedidosNuevos = myDAL.ValidarRegistros(lstPedidos);
+                List<string> lstFolios = FirebirdDAL.getUltimosFolios(sFecha);                
 
-                if (lstPedidosNuevos.Count != 0)
-                {
-                    string sFileName = "Pedido" + DateTime.Now.ToString("ddMMyyyy HHmmss") + ".txt";
-                    sFullPath = Environment.CurrentDirectory + "\\Pedidos\\" + sFileName;
-
-                    StreamWriter swFile = new StreamWriter(sFullPath, false);
-                    swFile.WriteLine("       NUEVO PEDIDO        ");
-                    swFile.WriteLine("TICKET    CANTIDAD ARTICULO");
-
-                    foreach (Venta pedido in lstPedidos)
+                foreach (string folio in lstFolios)
+                {                    
+                    List<Venta> lstVentas = FirebirdDAL.getPedidos(sFecha,folio);
+                    if (lstVentas.Count != 0)
                     {
-                        swFile.Write(pedido.FolioTicket.PadLeft(9));
-                        swFile.Write(" ");
-                        swFile.Write(pedido.Cantidad.ToString().PadLeft(8));
-                        swFile.Write(" ");
-                        swFile.WriteLine(pedido.Articulo);
-                    }
+                        string sFileName = "Pedido.txt";
+                        sFullPath = Environment.CurrentDirectory + "\\Pedidos\\" + sFileName;
 
-                    swFile.Close();
-                    exito = true;
+                        StreamWriter swFile = new StreamWriter(sFullPath, false);
+                        StringBuilder sb = new StringBuilder();
+                        //            "1234567890123456789012345678901234567890"
+                        sb.AppendLine("  Abastecedora de Carnes Los Corrales   ");
+                        sb.AppendLine();
+                        sb.AppendLine("              Nuevo Pedido              ");
+                        sb.AppendLine();
+                        sb.AppendLine("  TICKET: " + lstVentas[0].FolioTicket);
+                        sb.AppendLine("   FECHA: " + lstVentas[0].Fecha);
+                        sb.AppendLine("    HORA: " + lstVentas[0].Hora.Substring(0, 8));
+                        sb.AppendLine();
+                        sb.AppendLine("CANT  ARTICULO");
 
-                    MessageBox.Show("Enviado a cocina con exito..."); 
+                        ushort contador = 0;
+                        foreach (Venta pedido in lstVentas)
+                        {
+                            if (MySqlDAL.ValidarRegistros(pedido) == true)
+                            {
+                                sb.Append(pedido.Cantidad.ToString().PadLeft(4));
+                                sb.Append("  ");
+                                sb.AppendLine(pedido.Articulo);
+                                contador++;
+                            }
+                        }
+                        sb.AppendLine();
+                        //            "1234567890123456789012345678901234567890"
+                        sb.AppendLine("       Gracias por su preferencia       ");
+
+                        swFile.Write(sb.ToString());
+                        swFile.Close();
+
+                        if (contador != 0)
+                        {
+                            string sFileSavePath = 
+                                string.Format(@"{0}\Pedidos\{1}.txt",
+                                                Environment.CurrentDirectory, DateTime.Now.ToString("ddMMyyyy"));
+                            
+                            using (StreamWriter swFileSave = new StreamWriter(sFileSavePath, true))
+                            {
+                                swFileSave.WriteLine("****************************************");
+                                swFileSave.WriteLine(sb.ToString());
+                                swFileSave.WriteLine("****************************************");
+                                swFileSave.WriteLine();
+                                swFileSave.Close();
+                            }
+
+                            Imprimir(sFullPath);
+                        }
+                    }                                                                                                                          
                 }                
             } 
             catch (Exception ex)
@@ -72,7 +102,6 @@ namespace AbastecedoraPreparadosPedidos.GUIs
                 MessageBox.Show(ex.Message, ex.GetType().ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            return sFullPath;
         }
 
         private void Imprimir(string sFullPath)
@@ -81,7 +110,7 @@ namespace AbastecedoraPreparadosPedidos.GUIs
             {
                 fileToPrint = new StreamReader(sFullPath);
                 printFont = new System.Drawing.Font("Lucida Console", 8);
-                DocumentoPedido.PrinterSettings.PrinterName = Properties.Settings.Default.Impresora;
+                DocumentoPedido.PrinterSettings.PrinterName = Properties.Settings.Default.Impresora;                
                 DocumentoPedido.Print();
                 fileToPrint.Close();
             }

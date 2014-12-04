@@ -36,7 +36,7 @@ namespace AbastecedoraPreparadosPedidos.DAL
             return fbcsb.ConnectionString;
         }
 
-        private string getUltimos10Folios(string sFecha)
+        public List<string> getUltimosFolios(string sFecha)
         {
             string sSerie = Properties.Settings.Default.Serie;
             string Consulta =
@@ -44,7 +44,7 @@ namespace AbastecedoraPreparadosPedidos.DAL
                                     FROM DOCTOS_PV 
                                    WHERE FECHA >= '{0}' AND DOCTOS_PV.TIPO_DOCTO = 'V' AND
                                          FOLIO LIKE '{1}%' 
-                                ORDER BY FOLIO DESC", 
+                                ORDER BY FOLIO", 
                                 sFecha, sSerie.ToUpper());
 
             /* Acceso a base de datos */
@@ -56,18 +56,15 @@ namespace AbastecedoraPreparadosPedidos.DAL
             DataTable tablaResultado = new DataTable();
             Adapter.Fill(tablaResultado);
 
-            StringBuilder sb = new StringBuilder();
+            List<string> lstFolios = new List<string>();
             foreach (DataRow row in tablaResultado.Rows)
             {
-                sb.Append("'"+row["FOLIO"].ToString()+"'");
-                sb.Append(", ");
+                lstFolios.Add(row["FOLIO"].ToString());               
             }
-            sb.Append("' '");
 
             Conexion.Close();
-            /**************************/
 
-            return sb.ToString();
+            return lstFolios;
         }
         private string getClaves()
         {
@@ -76,11 +73,8 @@ namespace AbastecedoraPreparadosPedidos.DAL
             return sClaves;
         }
 
-        public List<Venta> getPedidos()
-        {
-            string sFecha = DateTime.Today.ToString("yyyy-MM-dd");
-            //string sFecha = "2014-11-28";
-            string ultimosFolios = getUltimos10Folios(sFecha);
+        public List<Venta> getPedidos(string sFecha, string sFolio)
+        {            
             string clavesArticulos = getClaves();
 
             string Consulta =
@@ -97,12 +91,12 @@ namespace AbastecedoraPreparadosPedidos.DAL
                                       INNER JOIN ARTICULOS ON (DOCTOS_PV_DET.ARTICULO_ID = ARTICULOS.ARTICULO_ID)
                                 WHERE
                                       DOCTOS_PV.FECHA >= '{0}' AND 
-                                      FOLIO IN ({1}) AND
+                                      FOLIO = '{1}' AND
                                       DOCTOS_PV_DET.CLAVE_ARTICULO IN ({2})
                                 ORDER BY
                                       FOLIO ASC",
                                       sFecha, 
-                                      ultimosFolios, 
+                                      sFolio, 
                                       clavesArticulos);
 
             /* Acceso a base de datos */

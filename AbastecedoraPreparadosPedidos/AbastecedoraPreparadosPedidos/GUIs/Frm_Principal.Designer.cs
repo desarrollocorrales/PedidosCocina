@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Principal));
             this.btnEnviar = new System.Windows.Forms.Button();
             this.DocumentoPedido = new System.Drawing.Printing.PrintDocument();
             this.label1 = new System.Windows.Forms.Label();
@@ -68,6 +69,7 @@
             this.ClientSize = new System.Drawing.Size(404, 262);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnEnviar);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Frm_Principal";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Enviar a cocina";

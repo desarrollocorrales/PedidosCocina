@@ -44,7 +44,7 @@ namespace AbastecedoraPreparadosPedidos.DAL
                                     FROM DOCTOS_PV 
                                    WHERE FECHA >= '{0}' AND DOCTOS_PV.TIPO_DOCTO = 'V' AND
                                          FOLIO LIKE '{1}%' 
-                                ORDER BY FOLIO", 
+                                ORDER BY FOLIO DESC", 
                                 sFecha, sSerie.ToUpper());
 
             /* Acceso a base de datos */

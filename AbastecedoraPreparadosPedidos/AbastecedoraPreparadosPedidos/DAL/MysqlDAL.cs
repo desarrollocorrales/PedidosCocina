@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using MySql.Data.MySqlClient;
 using AbastecedoraPreparadosPedidos.Modelos;
 
@@ -28,7 +29,6 @@ namespace AbastecedoraPreparadosPedidos.DAL
         {
             bool exito = false;
             Conexion.ConnectionString = getStringConnection();
-
             Conexion.Open();
             MySqlTransaction Transaccion = Conexion.BeginTransaction();
 
@@ -71,6 +71,44 @@ namespace AbastecedoraPreparadosPedidos.DAL
             }
 
             return exito;
+        }
+
+        public void InstalarBaseDeDatos()
+        {
+            string sCommandText =
+                File.ReadAllText(string.Format(@"{0}\Data\ControlTortas.sql", Environment.CurrentDirectory));
+
+            Conexion.ConnectionString = getStringConnection();
+            Conexion.ConnectionString = Conexion.ConnectionString.Replace("database=control_tortas;", string.Empty);
+
+            Conexion.Open();
+
+            Comando.Connection = Conexion;
+            Comando.CommandText = sCommandText;
+
+            Comando.ExecuteNonQuery();
+
+            if (Conexion.State != System.Data.ConnectionState.Closed)
+            {
+                Conexion.Close();
+            }
+        }
+
+        public bool ExisteBaseDeDatos()
+        {
+            try
+            {
+                Conexion.ConnectionString = getStringConnection();
+
+                Conexion.Open();
+                Conexion.Close();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

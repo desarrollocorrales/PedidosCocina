@@ -77,5 +77,39 @@ namespace AbastecedoraPreparadosPedidos.GUIs
                 MessageBox.Show(ex.Message, ex.GetType().ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void btnCrearBase_Click(object sender, EventArgs e)
+        {
+            CrearBaseDeDatos();
+        }
+        private void CrearBaseDeDatos()
+        {
+            string mensaje, titulo;
+
+            try
+            {          
+                DAL.MysqlDAL myDal = new DAL.MysqlDAL();
+                if (myDal.ExisteBaseDeDatos() == false)
+                {
+                    myDal.InstalarBaseDeDatos();
+                    mensaje = "¡¡¡La base de datos se ha creado con exito!!!";
+                    titulo = "Crear base de datos";
+
+                    MessageBox.Show(mensaje, titulo, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    mensaje = "La base de datos ya ha sido creada...";
+                    titulo = "Crear base de datos";
+                    MessageBox.Show(mensaje, titulo, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+                titulo = ex.GetType().ToString();
+                MessageBox.Show(mensaje, titulo, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

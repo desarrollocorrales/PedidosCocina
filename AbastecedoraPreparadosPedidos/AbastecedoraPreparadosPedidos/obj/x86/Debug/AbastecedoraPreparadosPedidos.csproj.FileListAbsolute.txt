@@ -27,3 +27,4 @@ D:\Github\PedidosCocina\AbastecedoraPreparadosPedidos\AbastecedoraPreparadosPedi
 D:\Github\PedidosCocina\AbastecedoraPreparadosPedidos\AbastecedoraPreparadosPedidos\obj\x86\Debug\AbastecedoraPreparadosPedidos.Properties.Resources.resources
 D:\Github\PedidosCocina\AbastecedoraPreparadosPedidos\AbastecedoraPreparadosPedidos\obj\x86\Debug\AbastecedoraPreparadosPedidos.csproj.GenerateResource.Cache
 D:\Github\PedidosCocina\AbastecedoraPreparadosPedidos\AbastecedoraPreparadosPedidos\obj\x86\Debug\AbastecedoraPreparadosPedidos.exe.licenses
+D:\Github\PedidosCocina\AbastecedoraPreparadosPedidos\AbastecedoraPreparadosPedidos\bin\Debug\Data\ControlTortas.sql

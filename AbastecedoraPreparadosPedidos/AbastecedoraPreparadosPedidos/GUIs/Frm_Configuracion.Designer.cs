@@ -44,6 +44,7 @@
             this.txbServidor = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.txbSerie = new System.Windows.Forms.TextBox();
+            this.btnCrearBase = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblTitulo
@@ -197,11 +198,23 @@
             this.txbSerie.Size = new System.Drawing.Size(47, 26);
             this.txbSerie.TabIndex = 1;
             // 
+            // btnCrearBase
+            // 
+            this.btnCrearBase.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCrearBase.Location = new System.Drawing.Point(12, 285);
+            this.btnCrearBase.Name = "btnCrearBase";
+            this.btnCrearBase.Size = new System.Drawing.Size(110, 35);
+            this.btnCrearBase.TabIndex = 17;
+            this.btnCrearBase.Text = "Crear Base";
+            this.btnCrearBase.UseVisualStyleBackColor = true;
+            this.btnCrearBase.Click += new System.EventHandler(this.btnCrearBase_Click);
+            // 
             // Frm_Configuracion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 332);
+            this.Controls.Add(this.btnCrearBase);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txbSerie);
             this.Controls.Add(this.label6);
@@ -247,5 +260,6 @@
         private System.Windows.Forms.TextBox txbServidor;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txbSerie;
+        private System.Windows.Forms.Button btnCrearBase;
     }
 }
